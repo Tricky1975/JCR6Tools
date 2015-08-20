@@ -1,0 +1,271 @@
+#!/usr/bin/python
+
+#I used to plan this for python 3 (as that would allow me lzma, but Python3 is needlessly complicated on stuff, so I decided to downgrade to Python 2 and leave lzma be).
+#-/usr/local/bin/python3   
+
+print("Python JCR 6 - Packer")
+print("Created by: Jeroen P. Broks, aka Tricky")
+print("Released under the terms of the Mozilla Public License 2.0")
+print("\n\n")
+
+import sys
+import os
+
+
+
+# No set parameters
+if len(sys.argv)<2:
+   print("usage: [python] c/s/v/x <script>/<jcr> <files>/[<destination>]")
+   print("\n\n")
+   #print("Please note this program requires Python 3. It will not work properly in Python 2")
+   print("Please note this program requires Python 2. It will not work properly in Python 3")
+   print("Example usages:")
+   print("PyJCR c MyJCR.JCR *         -- Create a JCR file with the specified files")
+   print("PyJCR s MyJCRScript.py      -- Create a JCR file with the settings from a set Python script")
+   print("PyJCR v MyJCR.JCR           -- Verboses the content of a JCR file!")
+   print("PyJCR x MyJCR.JCR           -- Extracts all files to MyJCR.JCR-Folder")
+   print("PyJCR x MyJCR.JCR MyDir     -- Extracts all files to MyDir")
+   print("\n\nPlease note JCR is a game resource tool, not an archiving tool!")
+   quit()
+
+
+# Import JCR5 if possible.
+#try:
+import JCR6
+#except:
+#   print("The module JCR6.py could not be properly loaded. It's either damaged or non-existant. Please reinstall JCR6!")
+#   quit()
+
+try:
+   from Tree import Tree
+except:
+   print("The module Tree.py could not be properly loaded. It's either damaged or non-existant. Please reinstall JCR6!")
+   quit()
+
+
+
+# zlib and lzma
+import JCR6zlib
+import JCR6bz2
+import JCR6lzma
+
+
+
+# Some functions and globals for the scripting
+global CJCR_Output
+global CJCR_AddEntries
+global CJCR_Config 
+global CJCR_FATStorage
+global CJCR_AddVars
+global CJCR_AddComments
+global CJCR_AllowMerge 
+CJCR_Output = 'Output.JCR'
+CJCR_FATStorage = 'Store'
+CJCR_Config = { "__CaseSensitive":False }
+CJCR_AddEntries = []
+CJCR_AddComments = {}
+CJCR_AddVars = {}
+CJCR_AddImport = []
+CJCR_AddRequire = []
+CJCR_AllowMerge = True
+CJCR_Alias = {}
+
+def Output(filestr):
+    global CJCR_Output
+    CJCR_Output = filestr
+
+def Add(I,OD,Storage='zlib',Author='',Notes=''):
+    if os.path.isdir(I):
+       T = Tree(I,True)
+       RD = I
+       work='dir'
+    else:
+       T = [I]
+       RD = ""
+       work='file'
+    for F in T:
+        if work=='dir': 
+           PF = F.replace(I,OD,1)
+        else:
+           PF = "%s/%s"%(OD,os.path.basename(F))
+        CJCR_AddEntries.append( { 'Input':F,'Output':PF,'Author':Author,'Notes':Notes,'Storage':Storage } )
+        
+def Alias(Ori,Tgt):
+    CJCR_Alias[Tgt] = Ori        
+
+def Config(Tag,Value):
+    global CJCR_Config
+    if not Tag in CJCR_Config:
+       print("WARNING!!   Config('%s',%s): Config tag unknown! Request ignored!"%(Tag,Value))
+       return
+    if type(Value)!=type(CJCR_Config[Tag]):
+       print("WARNING!!   Config('%s',%s): Expected %s, but got %s. Request ignored!"%(Tag,Value,type(CJCR_Config[Tag]),type(Value)))
+       return
+    CJCR_Config[Tag]=Value	    
+
+def FATStorage(alg):  
+    global CJCR_FATStorage	
+    if not JCR6.Storages[alg]: 
+       print("WARNING! Compression algorithm \"%s\" doesn't exist! Request to store the FAT in this way has been ignored!")
+    else:
+       CJCR_FATStorage = alg	
+       
+def AddCmt(tag,cmt):
+    global CJCR_AddComments
+    CJCR_AddComments[tag] = cmt
+    
+def AddVar(tag,value):
+    if JCR6.VarDebug: print "Request to do a variable received"
+    global CJCR_AddVars
+    CJCR_AddVars[tag] = value
+    
+def AddImport(filename,signature='',allowpath=False):
+    CJCR_AddImport.append({'File':filename, 'signature':signature,'AllowPath':allowpath})
+def AddRequire(filename,signature='',allowpath=False):
+    CJCR_AddRequire.append({'File':filename,'signature':signature,'AllowPath':allowpath})
+
+def AllowMerge(Allow=True):
+    CJCR_AllowMerge = Allow
+
+
+# C: Set up data to create a JCR file from a simple command line!
+if sys.argv[1].upper()=='C':
+   if len(sys.argv)<4:
+      print("Not enough data to create a JCR file upon!")
+      quit()
+   Output(sys.argv[2])
+   Add(sys.argv[3],'','zlib','','')
+   CJCR_FATStore = 'zlib'
+
+
+# S: Set up data to create a JCR file fom a script!
+if sys.argv[1].upper()=='S':
+   if len(sys.argv)<3:
+      print("I need a script!")
+      quit()
+   print("Reading Script: %s"%sys.argv[2])   
+   try:
+      execfile(sys.argv[2])
+   except Exception,e:
+      line = '{}'.format(sys.exc_info()[-1].tb_lineno)	   
+      print("ERROR: %s\nLine:%s\nPlease check your work script more thoroughly!"%(e,line))
+      quit()
+
+if sys.argv[1][-3:].upper()=='.PY':
+   print("Reading Script: %s"%sys.argv[1])   
+   try:
+      execfile(sys.argv[1])
+   except Exception,e:
+      line = '{}'.format(sys.exc_info()[-1].tb_lineno)	   
+      print("ERROR: %s\nLine:%s\nPlease check your work script more thoroughly!"%(e,line))
+      quit()
+
+
+
+# C/S: Create the actual JCR file ;)
+if sys.argv[1].upper()=='C' or sys.argv[1].upper()=='S' or sys.argv[1][-3:].upper()=='.PY':
+    print("Creating JCR: %s"%CJCR_Output)
+    #print(CJCR_AddEntries) # debug    
+    print("\n\n")
+    bt = JCR6.Create(CJCR_Output,CJCR_Config)
+    print("Freezing the next 'raw' files..")
+    for entry in CJCR_AddEntries:
+    	#print "Mergable? -- %s"%JCR6.Recognize(entry['Input'])    
+    	if CJCR_AllowMerge and JCR6.Recognize(entry['Input']):
+    	   print "- Merging: %s"%entry['Input']
+    	   MergeDir = JCR6.Dir(entry['Input'])
+           MergeToPath = entry['Output']
+           if MergeToPath.upper()[-4:]==".JCR": MergeToPath = MergeToPath[:-4]
+    	   for MergeFileKey in sorted(MergeDir.Entries.keys()):
+    	       MergeFile = MergeDir.Entries[MergeFileKey]["__Entry"]
+    	       MergeBuf = JCR6.Read(entry['Input'],MergeFile)
+    	       sys.stdout.write("  = %s ... "%MergeFile)
+    	       MergeAuthor = MergeDir.Entries[MergeFileKey]["__Author"]
+    	       MergeNotes  = MergeDir.Entries[MergeFileKey]["__Notes"]
+    	       if not MergeAuthor: MergeAuthor = entry['Author']
+    	       if not MergeNotes:  MergeNotes  = entry['Notes']    	       
+    	       print bt.AddStringAsEntry(MergeBuf,"%s/%s"%(MergeToPath,MergeFile),entry['Storage'],MergeAuthor,MergeNotes)
+    	else:       
+    	   sys.stdout.write('- %s ... '%entry['Input'])    
+    	   print(bt.AddFile(entry['Input'],entry['Output'],entry['Storage'],entry['Author'],entry['Notes']))
+    for cmt in CJCR_AddComments:
+    	bt.AddComment(cmt,CJCR_AddComments[cmt])
+    for varkey in CJCR_AddVars:
+    	bt.AddVar(varkey,CJCR_AddVars[varkey])
+    for dep in CJCR_AddRequire:
+        bt.RequireTable.append(dep)
+    for dep in CJCR_AddImport:
+    	bt.ImportTable.append(dep)
+    for als in CJCR_Alias:
+    	sys.stdout.write("- Alias: %s => %s ... "%(als,CJCR_Alias[als]))
+    	print bt.AddAlias(CJCR_Alias[als],als)
+    print("Finalzing...")
+    bt.Close(CJCR_FATStorage)
+
+
+
+# V: Show the user the contents of the JCR file!
+if sys.argv[1].upper()=='V':
+   if len(sys.argv)<3:
+      print("I need a JCR-file!")
+      quit()
+   print('Reading file: %s'%sys.argv[2])
+   jdir = JCR6.Dir(sys.argv[2])
+   if jdir.Config["__CaseSensitive"]: 
+      SCS = 'Case Sensitive'
+   else:
+      SCS = 'Case IN-sensitive'
+   print('File type:    %s'%jdir.FType)
+   print('FAT Casing:   %s'%SCS)
+   print('FAT Storage:  %s'%jdir.FATCompAlg)
+   if "__Signature" in jdir.Config:
+      print('Signature:    %s'%jdir.Config["__Signature"])
+   print('\n\n')
+   for ctag in sorted(jdir.Comments.keys()):
+       print("=== %s\n%s\n===\n\n"%(ctag,jdir.Comments[ctag]))	   
+   al = "{:>9} {:>10} {:>10}"
+   print al.format('Size','Compressed','Algorithm')
+   print al.format('====','==========','=========')
+   total = {"__Size":0,"__CSize":0,"__Entry":0}
+   for en in sorted(jdir.Entries.keys()):
+       ed = jdir.Entries[en]
+       print "%s  %s"%(al.format(ed['__Size'],ed['__CSize'],ed['__Storage']),ed['__Entry'])
+       total["__Size"] = total["__Size"]+ed["__Size"]
+       total["__CSize"] = total["__CSize"]+ed["__CSize"]
+       total["__Entry"] = total["__Entry"]+1
+   print al.format('====','==========','=========')
+   print "%s  %s Entries"%(al.format(total["__Size"],total['__CSize'],""),total["__Entry"])
+       
+
+# X: Extract the JCR file
+if sys.argv[1].upper()=='X':
+   if len(sys.argv)<3:
+      print("I need a JCR-file!")
+      quit()
+   outp = "%s_Folder/"%sys.argv[2]
+   if len(sys.argv)>3: outp = "%s/"%sys.argv[3]
+   J = JCR6.Dir(sys.argv[2])
+   print('Extracting the next files:')
+   for ent in sorted(J.Entries.keys()):
+       outputfile = '%s%s'%(outp,J.Entries[ent]['__Entry'])
+       outputpath,f = os.path.split(outputfile)
+       if not os.path.isdir(outputpath):
+       	  sys.stdout.write('* Creating Dir: %s ... '%outputpath)
+          try:
+            os.makedirs(outputpath)
+            mkdok = True
+            print("OK!")
+          except Exception,err:
+            mkdok=False
+            print('ERROR! %s'%err)    
+       else: mkdok=True     
+       sys.stdout.write('- %s ... '%J.Entries[ent]['__Entry'])
+       if mkdok:
+          buf = JCR6.Read(J,ent)
+          bto = open(outputfile,'wb')
+          bto.write(buf)
+          bto.close()
+          print "OK!"
+       else:
+       	  print "SKIPPED! Due to error above!"     
+   print "All Done!"
