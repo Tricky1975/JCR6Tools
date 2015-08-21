@@ -26,7 +26,7 @@ Then there are also a few variables you can (or sometimes have to) set
 
 - CJCR_Output - Must contain the name of the JCR6 file (default is Output.JCR)
 - CJCR_FATStorage - Must contain the compression method used for storing the file table. By default "Store", I prefer to use "zlib"
-- CJCR_Config - Is a directory in which certain settings can be done. A useful field you can define is "__Sigature" to set the signature you can require for AddImport() and AddRequire() or just as and ID for your file (you can make your own engine check on this). You can set your own config with this if you want, fields prefixed with "__" are reserved by me in case extra features are added to JCR6
+- CJCR_Config - Is a directory in which certain settings can be done. A useful field you can define is "\_\_Sigature" to set the signature you can require for AddImport() and AddRequire() or just as and ID for your file (you can make your own engine check on this). You can set your own config with this if you want, fields prefixed with "\_\_" are reserved by me in case extra features are added to JCR6
 
 And for the rest you can do whatever Python supports.
 Please note the JCR6 file will be created AFTER your entire script has been run and not a moment sooner. This script will only configure pyJCR prior to running.
