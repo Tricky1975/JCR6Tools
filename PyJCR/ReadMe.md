@@ -5,12 +5,12 @@ Thanks to that this tool should be totally platform independent. Mac and most Li
 The used Python version here is Python 2.7
 
 ### Novice usage
-When you are not well versed in advanced usage you can just type "PyJCR c <myjcr> <myfolder>" in order to set up a simple JCR6 file.
-With "PyJCR v <myJCR>" you can view a JCR6 and with "PyJCR x <MyJCR>" you can extract stuff, if you ever need such a feature (I hardly use it myself).
+When you are not well versed in advanced usage you can just type "PyJCR c \<myjcr\> \<myfolder\>" in order to set up a simple JCR6 file.
+With "PyJCR v \<myJCR\>" you can view a JCR6 and with "PyJCR x \<MyJCR>" you can extract stuff, if you ever need such a feature (I hardly use it myself).
 
 ### Advanced usage
 When you are a more advanced user, you can use the true power of PyJCR and also take true advantage that the tool is entirely written in Python.
-If you type "PyJCR s <script>" PyJCR will import your script file and make it part of its own and start working the way you want it. If your script ends on ".py" you can even skip the s command and just type "PyJCR <script>.py" and it will work all the same.
+If you type "PyJCR s \<script\>" PyJCR will import your script file and make it part of its own and start working the way you want it. If your script ends on ".py" you can even skip the s command and just type "PyJCR \<script\>.py" and it will work all the same.
 You script files should be (duh) written in pure Python code. 
 
 A few commands you can use are:
