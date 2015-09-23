@@ -1,11 +1,10 @@
 Rem
-/*
 	JCR6 - GJCR - List
 	
 	
 	
 	
-	(c) Jeroen Petrus Broks, 2015, All rights reserved
+	(c) Jeroen P. Broks, 2015, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -21,11 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-*/
-
-
-Version: 15.05.20
-
+Version: 15.09.23
 End Rem
 Strict
 Import jcr6.jcr6main
@@ -38,8 +33,8 @@ Import "view.bmx"
 
 'Incbin "JCR.png"
 
-MKL_Version "JCR6 - BlitzMax/Apps/GJCR/imp/List.bmx","15.05.20"
-MKL_Lic     "JCR6 - BlitzMax/Apps/GJCR/imp/List.bmx","GNU - General Public License ver3"
+MKL_Version "JCR6 - List.bmx","15.09.23"
+MKL_Lic     "JCR6 - List.bmx","GNU General Public License 3"
 
 
 Private
@@ -52,6 +47,27 @@ Type ListTab Extends TTab
 
 	Method Flow(ID,Source:TGadget,Extra$,ExtraGadget:TGadget)
 	'fileinfo.setenabled CFile<>""
+	If cfile And JCR
+		Select jcr_changed(JCR)
+			Case 0 ' Do nothing
+			Case 1,2
+				Notify "One of the main files in this resource appears to have been modified, and will be reloaded!"
+				Reload
+			Case 3
+				If FileType(cfile)
+					Notify "One of the main files has been removed. I will try to reload!"
+					Reload
+				Else
+					Notify "The root main file has been removed. A reload is not possible!"
+					FreeGadget root
+					cfile = ""					
+				EndIf
+			Case 4
+				Notify "An unregistered resource file has been tied into the JCR6 resource.~nThis can only be the result of a bug in either GJCR or the underlying JCR6 system!~nPlease notify Jeroen Broks on his github repository: http://github/Tricky1975/JCR6Tools~n~nA direct reload is currently not possible!"
+				cfile = ""
+				FreeGadget root	
+			EndSelect
+		EndIf		
 	Local s,f$
 	Select id
 		Case event_windowaccept	Accept Extra
@@ -315,6 +331,14 @@ For Local gb:TGadget=EachIn FileButtons
 updaterecent File 	
 End Function 
 
+Function Reload()
+If Not Cfile Return
+If Not FileType(CFile) Return Notify(Cfile+" appears to be removed making a reload impossible")
+Local file$ = CFile
+FreeGadget root
+CFile = ""
+Accept file
+End Function
 
 ' Let's expose the data every node provides
 Type TIMain

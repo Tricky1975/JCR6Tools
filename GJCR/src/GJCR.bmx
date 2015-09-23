@@ -1,5 +1,4 @@
 Rem
-/*
 	GJCR (or GUI - JCR) for JCR6
 	A GUI based program for easily handing JCR6 files
 	
@@ -21,11 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-*/
-
-
-Version: 15.05.20
-
+Version: 15.09.23
 End Rem
 Strict
 Framework maxgui.drivers
@@ -61,8 +56,8 @@ Import "WinIcon/JCR.o"
 ?
 
 ' Version information
-MKL_Version "JCR6 - BlitzMax/Apps/GJCR/GJCR.bmx","15.05.20"
-MKL_Lic     "JCR6 - BlitzMax/Apps/GJCR/GJCR.bmx","GNU - General Public License ver3"
+MKL_Version "JCR6 - GJCR.bmx","15.09.23"
+MKL_Lic     "JCR6 - GJCR.bmx","GNU General Public License 3"
 
 ' Everything set, let's get ready to rumble
 Run
