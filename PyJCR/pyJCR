@@ -167,6 +167,8 @@ if sys.argv[1].upper()=='C' or sys.argv[1].upper()=='S' or sys.argv[1][-3:].uppe
     print("Creating JCR: %s"%CJCR_Output)
     #print(CJCR_AddEntries) # debug    
     print("\n\n")
+    # Deprecated case sensitivity
+    if CJCR_Config["__CaseSensitive"]: raw_input("WARNING! WARNING! WARNING!\n\nCase senstive file are due to technical reasons officially deprecated as of version 15.10.18, and somewhere after version 17.01.01 it may be removed completely.\n\nI'll just handle your request normally, however I strongly recommend against creating case sensitive files\n\nHit enter to continue . . .\n")
     bt = JCR6.Create(CJCR_Output,CJCR_Config)
     print("Freezing the next 'raw' files..")
     for entry in CJCR_AddEntries:
@@ -199,7 +201,7 @@ if sys.argv[1].upper()=='C' or sys.argv[1].upper()=='S' or sys.argv[1][-3:].uppe
     for als in CJCR_Alias:
     	sys.stdout.write("- Alias: %s => %s ... "%(als,CJCR_Alias[als]))
     	print bt.AddAlias(CJCR_Alias[als],als)
-    print("Finalzing...")
+    print("Finalizing...")
     bt.Close(CJCR_FATStorage)
 
 
@@ -213,6 +215,7 @@ if sys.argv[1].upper()=='V':
    jdir = JCR6.Dir(sys.argv[2])
    if jdir.Config["__CaseSensitive"]: 
       SCS = 'Case Sensitive'
+      raw_input("WARNING! WARNING! WARNING!\n\nCase senstive files are due to technical reasons officially deprecated as of version 15.10.18, and somewhere after version 17.01.01 the functionality for this may be removed completely.\n\nI'll just handle your request normally, however I strongly recommend against creating case sensitive files\n\nHit enter to continue . . .\n")
    else:
       SCS = 'Case IN-sensitive'
    print('File type:    %s'%jdir.FType)
@@ -245,6 +248,9 @@ if sys.argv[1].upper()=='X':
    outp = "%s_Folder/"%sys.argv[2]
    if len(sys.argv)>3: outp = "%s/"%sys.argv[3]
    J = JCR6.Dir(sys.argv[2])
+   if J.Config["__CaseSensitive"]: 
+      SCS = 'Case Sensitive'
+      raw_input("WARNING! WARNING! WARNING!\n\nCase senstive files are due to technical reasons officially deprecated as of version 15.10.18, and somewhere after version 17.01.01 the functionality for this may be removed completely.\n\nI'll just handle your request normally, however I strongly recommend against creating case sensitive files\n\n\n\nYou do not have to worry about the case usage in extracted files. This will always be the same as inside the JCR6 file, the deprecated case sensitivity will only affect referencing files.\nHit enter to continue . . .\n")
    print('Extracting the next files:')
    for ent in sorted(J.Entries.keys()):
        outputfile = '%s%s'%(outp,J.Entries[ent]['__Entry'])
