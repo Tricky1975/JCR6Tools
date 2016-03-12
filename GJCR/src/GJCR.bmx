@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2015, All rights reserved
+	(c) Jeroen P. Broks, 2015, 2016, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 15.09.23
+Version: 16.03.12
 End Rem
 Strict
 Framework maxgui.drivers
@@ -31,6 +31,7 @@ Import jcr6.wad
 Import jcr6.zlibdriver
 Import jcr6.jcr5driver
 Import jcr6.quakepak
+Import jcr6.tar4jcr6
 Import brl.pngloader
 Import brl.jpgloader
 Import brl.oggloader
@@ -56,7 +57,7 @@ Import "WinIcon/JCR.o"
 ?
 
 ' Version information
-MKL_Version "JCR6 - GJCR.bmx","15.09.23"
+MKL_Version "JCR6 - GJCR.bmx","16.03.12"
 MKL_Lic     "JCR6 - GJCR.bmx","GNU General Public License 3"
 
 ' Everything set, let's get ready to rumble

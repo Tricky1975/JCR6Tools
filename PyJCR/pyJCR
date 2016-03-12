@@ -8,6 +8,17 @@ print("Created by: Jeroen P. Broks, aka Tricky")
 print("Released under the terms of the Mozilla Public License 2.0")
 print("\n\n")
 
+print """ 
+
+      NOTE!
+      This utility has as of March 12, 2016 been deprecated.
+      This utility will for the time being be kept on-line,
+      but no maintenence shall be done to it any more.
+      
+      This the new CLI tools in stead. Thank you.
+      
+"""
+
 import sys
 import os
 
