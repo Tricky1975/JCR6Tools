@@ -1,5 +1,13 @@
 # PyJCR
 
+## NOTICE
+
+As of March, 12, 2016 PyJCR is deprecated.
+The tool shall remain available, but will no longer be maintained.
+Please use the CLI tools in stead!
+
+### Intro
+
 PyJCR is a very simply yet powerful tool to build JCR6 files. As the "py" part in the name suggests the tool has been entirely written in Python.
 Thanks to that this tool should be totally platform independent. Mac and most Linux distros already have Python present. On Windows you will need to separately install it.
 The used Python version here is Python 2.7
