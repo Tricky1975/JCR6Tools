@@ -56,6 +56,15 @@ Import "imp/run.bmx"
 Import "WinIcon/JCR.o"
 ?
 
+'App Title
+?Win32
+AppTitle = "GJCR (JCR6) for Windows"
+?MacOS
+AppTitle = "GJCR (JCR6) for Mac"
+?Linux
+AppTitle = "GJCR (JCR6) for Linux"
+?
+
 ' Version information
 MKL_Version "JCR6 - GJCR.bmx","16.03.12"
 MKL_Lic     "JCR6 - GJCR.bmx","GNU General Public License 3"
