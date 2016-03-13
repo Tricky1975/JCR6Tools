@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.12
+Version: 16.03.13
 End Rem
 Strict
 
@@ -30,7 +30,7 @@ Import    tricky_units.ListDir
 Import    tricky_units.prefixsuffix
 Import    "imp/Version.bmx"
 
-MKL_Version "JCR6 - jcr6.bmx","16.03.12"
+MKL_Version "JCR6 - jcr6.bmx","16.03.13"
 MKL_Lic     "JCR6 - jcr6.bmx","GNU General Public License 3"
 MKL_Post
 
@@ -46,7 +46,7 @@ If Len(AppArgs)<2
 	Print "Usage: jcr6 <command> [parameters]"
 	Print "~nAvailable commands:"
 	For Local u$=EachIn ListDir(AppDir,LISTDIR_FILEONLY)
-		If Prefixed(u,"jcr6_") And myextention=ExtractExt(u) Print Replace(u,"jcr6_","- ")
+		If Prefixed(u,"jcr6_") And myextention=ExtractExt(u) Print StripExt(Replace(u,"jcr6_","- "))
 		Next
 	Print "~nThe JCR6 modules have been licenced under the terms of the MPL 2.0"
 	Print "These command line utilities have been licenced under the termso of the GNU GPL 3"
@@ -55,6 +55,9 @@ If Len(AppArgs)<2
 	
 
 Global cmd$ = AppDir+"/jcr6_"+AppArgs[1]
+?win32
+cmd:+".exe"
+?
 
 If Not FileType(cmd) 
 	Print "ERROR! Unknown command: "+AppArgs[1]

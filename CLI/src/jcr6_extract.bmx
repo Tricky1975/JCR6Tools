@@ -6,20 +6,20 @@ Rem
 	
 	(c) Jeroen P. Broks, 2016, All rights reserved
 	
-		This program is free software: you can redistribute it And/Or modify
+		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
-		the Free Software Foundation, either version 3 of the License, Or
+		the Free Software Foundation, either version 3 of the License, or
 		(at your option) any later version.
 		
 		This program is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY Or FITNESS For A PARTICULAR PURPOSE.  See the
-		GNU General Public License For more details.
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		GNU General Public License for more details.
 		You should have received a copy of the GNU General Public License
-		along with this program.  If Not, see <http://www.gnu.org/licenses/>.
+		along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		
-	Exceptions To the standard GNU license are available with Jeroen's written permission given prior 
-	To the project the exceptions are needed For.
+	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
+	to the project the exceptions are needed for.
 Version: 16.03.12
 End Rem
 Strict
@@ -33,7 +33,7 @@ Import    "imp/TrueArg.bmx"
 Import    "imp/WildCard.bmx"
 
  
-MKL_Version "JCR6 - jcr6_extract.bmx","16.23.12"
+MKL_Version "JCR6 - jcr6_extract.bmx","16.03.12"
 MKL_Lic     "JCR6 - jcr6_extract.bmx","GNU General Public License 3"
 MKL_Post
 

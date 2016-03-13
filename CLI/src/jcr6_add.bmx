@@ -1,3 +1,27 @@
+Rem
+	JCR6 - CLI - Add
+	Adds/Updates new files to JCR
+	
+	
+	
+	(c) Jeroen P. Broks, 2016, All rights reserved
+	
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
+		the Free Software Foundation, either version 3 of the License, or
+		(at your option) any later version.
+		
+		This program is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		GNU General Public License for more details.
+		You should have received a copy of the GNU General Public License
+		along with this program.  If not, see <http://www.gnu.org/licenses/>.
+		
+	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
+	to the project the exceptions are needed for.
+Version: 16.03.13
+End Rem
 Strict
 
 Framework brl.retro
@@ -10,8 +34,8 @@ Import    "imp/WildCard.bmx"
 Import    "imp/Update.bmx"
 
  
-MKL_Version "JCR6 - jcr6_extract.bmx","16.23.12"
-MKL_Lic     "JCR6 - jcr6_extract.bmx","GNU General Public License 3"
+MKL_Version "JCR6 - jcr6_add.bmx","16.03.13"
+MKL_Lic     "JCR6 - jcr6_add.bmx","GNU General Public License 3"
 MKL_Post
 
 If Len(AppArgs)=1
@@ -49,12 +73,13 @@ Type Taddcomment
 	Field name$,comment$
 	End Type	
 	
-If Len(targ)<2 Print "ERROR! Syntax error!" End	
+If Len(targ)<2 Print "ERROR! Syntax error!!" End	
 	
 Global AddList:TList 
 Global destroyoriginal:Byte
 Global Jfile$ = Targ[1]
 Global fatstorage$ = "Store"
+Global jconfig:configmap
 
 Function GetProgress:TList(A:TList,dir$="")
 Local AF:TAddFile
@@ -81,6 +106,10 @@ destroyoriginal = gotswitch("-doj") Or (Not FileType(Jfile$))
 Return ret
 End Function
 
+Type talias
+	Field original$,target$	
+	End Type
+
 Global linenumber
 Function LoadProgress:TList(file$)
 Local ret:TList = New TList
@@ -91,6 +120,7 @@ Local linepar$
 Local spl
 Local AF:taddfile
 Local globalstorage$ = "Store"
+Local aliasname$
 addlist = New TList
 Function er(error$) Print "ERROR! "+error+" in line #"+linenumber End Function
 Print "Instruction file: "+file
@@ -147,6 +177,26 @@ For Local trueline$=EachIn Listfile(file)
 				ac.comment = tc
 				ListAddLast ret,ac	
 				DebugLog "Comment>>  "+ac.name+" = "+ac.comment
+			Case "CONFIG"
+				'jconfig = JCR_GetDefaultCreateConfig()
+				spl = linepar.find(",")
+				Local tc$ = linepar[spl+1..]
+				tc = Replace(tc,"\n","~n")
+				tc = Replace(tc,"\r","~r")				
+				tc = Replace(tc,"\bslash\","\")
+				If Not jconfig jconfig = New configmap
+				jconfig.def linepar[..spl],tc			
+			Case "ALIAS"
+				aliasname = linepar
+			Case "AS"
+				If aliasname
+					Local al:talias = New talias
+					al.original = aliasname
+					al.target = linepar
+					ListAddLast ret,al
+				Else
+					Print "ERROR! The 'AS' command can only be used when a file was set up for aliassing"
+					EndIf									
 			Default
 				er "Unknown command: "+linecmd
 			End Select
@@ -187,7 +237,8 @@ Global CJ:TJCRCreate
 Global tfiles:TList 
 If destroyoriginal
 	Print "Creating JCR: "+jfile
-	cj = JCR_Create(jfile)
+	'If jconfig Then Print "we got config!"
+	cj = JCR_Create(jfile,jconfig)
 Else
 	Print "Updating JCR: "+jfile
 	tfiles = New TList
@@ -268,6 +319,31 @@ For Local ac:taddcomment = EachIn addlist
 	Print "- "+ac.name+" ... added comment"
 	MapInsert cj.comments,ac.name,ac.comment
 	Next	
+Global aliased,e2:TJCREntry
+For Local al:talias = EachIn addlist
+	WriteStdout "- "+al.original+" ... "
+	e = TJCREntry(MapValueForKey(cj.entries,Upper(al.original)))
+	If Not e e = TJCREntry(MapValueForKey(cj.entries,al.original))
+	If MapContains(cj.entries,Upper(al.target))
+		Print "failed -- Alias request with already existing target: "+al.target
+		failed:+1		
+	ElseIf e
+		e2 = New TJCREntry
+		e2.filename = al.target
+		e2.mv = e.mv
+		MapInsert cj.entries,Upper(al.target),e2			
+		Print "aliassed as: "+al.target
+	Else
+		Print "failed -- Alias request from non-existing original: "+al.original
+		failed:+1
+		EndIf
+	Next	
+	
+Select aliased
+	Case 0
+	Case 1	Print "~t1 file aliased"
+	Default	Print "~t"+aliased+" files aliased"
+	End Select		
 	
 Select added
 	Case 0
