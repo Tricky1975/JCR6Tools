@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2015, All rights reserved
+	(c) Jeroen P. Broks, 2015, 2016, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,42 +20,13 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 15.09.02
-End Rem
-Rem
-/*
-	JCR6 - GJCR - View
-	
-	
-	
-	
-	(c) Jeroen Petrus Broks, 2015, All rights reserved
-	
-		This program is free software: you can redistribute it and/or modify
-		it under the terms of the GNU General Public License as published by
-		the Free Software Foundation, either version 3 of the License, or
-		(at your option) any later version.
-		
-		This program is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		GNU General Public License for more details.
-		You should have received a copy of the GNU General Public License
-		along with this program.  If not, see <http://www.gnu.org/licenses/>.
-		
-	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
-	to the project the exceptions are needed for.
-*/
-
-
-Version: 15.05.20
-
+Version: 16.05.03
 End Rem
 Strict
 Import "window.bmx" 
 
 
-MKL_Version "JCR6 - View.bmx","15.09.02"
+MKL_Version "JCR6 - View.bmx","16.05.03"
 MKL_Lic     "JCR6 - View.bmx","GNU General Public License 3"
 
 
@@ -103,6 +74,7 @@ Type TViewText Extends TViewBase
 		SetGadgetFont MainGadget,LookupGuiFont(GUIFONT_MonoSpaced,12)
 		SetGadgetColor mainGadget,0,255,255,False
 		SetGadgetColor maingadget,0,  0,100,True
+		ListAddLast allowcopy,maingadget
 		EndIf
 	If Not B Return JError("Content could not be read!"	)
 	SetGadgetText MainGadget,LoadString(B)
@@ -143,6 +115,7 @@ Global ViewIdx
 Global ViewText:TViewText 
 Global ViewPic:TViewPic
 
+
 Function SetUpView()
 ViewIdx = Hello("View",New ViewTab)
 View = Pan(ViewIdx)
@@ -153,6 +126,7 @@ ViewText:TViewText = New TViewText
 ViewPic = New TViewPic
 ListAddLast viewlist,viewtext
 ListAddLast viewlist,viewpic
+
 End Function
 
 

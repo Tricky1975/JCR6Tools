@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.12
+Version: 16.03.21
 End Rem
 Strict
 Framework maxgui.drivers
@@ -32,6 +32,7 @@ Import jcr6.zlibdriver
 Import jcr6.jcr5driver
 Import jcr6.quakepak
 Import jcr6.tar4jcr6
+Import jcr6.jcr6webread
 Import brl.pngloader
 Import brl.jpgloader
 Import brl.oggloader
@@ -66,7 +67,7 @@ AppTitle = "GJCR (JCR6) for Linux"
 ?
 
 ' Version information
-MKL_Version "JCR6 - GJCR.bmx","16.03.12"
+MKL_Version "JCR6 - GJCR.bmx","16.03.21"
 MKL_Lic     "JCR6 - GJCR.bmx","GNU General Public License 3"
 
 ' Everything set, let's get ready to rumble

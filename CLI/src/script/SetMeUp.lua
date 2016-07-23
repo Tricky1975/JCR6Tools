@@ -20,7 +20,7 @@
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.13
+Version: 16.05.03
 ]]
 
 --- This script is not part of JCR6 itself. I only used it to both test the JCR6 scripter
@@ -30,7 +30,13 @@ Version: 16.03.13
 jcr6file("script/libs.jcr")
 config = config or {}
 
+-- @IF $MAC
 libdir = '/Volumes/Irravonia/Projects/Lua Libs For GALE'
+-- @FI
+
+-- @IF $WINDOWS
+libdir = '/Projects/Lua Libs For GALE'
+-- @FI
 tree = GetTree(libdir)
 
 

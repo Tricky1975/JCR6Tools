@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.13
+Version: 16.03.21
 End Rem
 Strict
 
@@ -34,7 +34,7 @@ Import    "imp/WildCard.bmx"
 Import    "imp/Update.bmx"
 
  
-MKL_Version "JCR6 - jcr6_add.bmx","16.03.13"
+MKL_Version "JCR6 - jcr6_add.bmx","16.03.21"
 MKL_Lic     "JCR6 - jcr6_add.bmx","GNU General Public License 3"
 MKL_Post
 
@@ -86,21 +86,23 @@ Local AF:TAddFile
 Local ret:TList = New TList
 Local storage$ = "Store"
 fatstorage = ""
+'ChangeDir dir
 For Local s$=EachIn switches
-	If Prefixed(s,"-cm") storage    = dir+"/"+Right(s,Len(s)-3)
+	If Prefixed(s,"-cm") storage    = Right(s,Len(s)-3)
 	If Prefixed(s,"-fc") fatstorage = Right(s,Len(s)-3)
 	If Prefixed(s,"-cd") ChangeDir    Right(s,Len(s)-3)
 	Next
 If Not fatstorage = storage fatstorage=storage
 SortList A
 For Local f$=EachIn A
-	AF = New TaddFile
+	AF = New TaddFile	
 	AF.OFile = f
 	AF.TFile = f
 	AF.storage = storage
 	AF.AllowMerge = GotSwitch("-mrg")
 	AF.deloriginal = gotswitch("-m")	
-	ListAddLast ret,A
+	If dir af.ofile = dir+"/"+f
+	ListAddLast ret,AF
 	Next
 destroyoriginal = gotswitch("-doj") Or (Not FileType(Jfile$))
 Return ret
@@ -208,11 +210,11 @@ Return ret
 End Function
 
 
-Global files$ = "."
+Global files$ = LaunchDir
 If Len(targ)>2 files = Replace(targ[2],"\","/")
 Print "Process JCR:      "+jfile
 Print "Files:            "+Files
-Print "Launched from:    "+LaunchDir
+Print "Launched from:    "+LaunchDir; ChangeDir LaunchDir
 
 Global processlist:TList
 If Left(files,1)="@" 
@@ -221,6 +223,7 @@ ElseIf Left(files,1)="#"
 	addlist = loadprogress(Right(files,Len(files)-1))
 Else
 	'addlist = getprogress(WildCard(CreateTree(),files))
+	'Print "Filetype("+files+") = "+FileType(files)
 	Select FileType(files)
 		Case 0	
 			Print "ERROR! I cannot found input file/dir: "+files
@@ -229,12 +232,16 @@ Else
 			ListAddLast addlist,files
 			addlist = getprogress(addlist)
 		Case 2
+			Print "Analysing directory tree"
 			addlist = getprogress(CreateTree(files),files)
 		End Select	
 	EndIf
 
 Global CJ:TJCRCreate
 Global tfiles:TList 
+Global alc
+For Local a:TAddfile=EachIn addlist alc:+1 Next
+If Not alc Print "No files to process! Ignoring request!" End Else Print "Files to process: "+alc
 If destroyoriginal
 	Print "Creating JCR: "+jfile
 	'If jconfig Then Print "we got config!"
@@ -356,9 +363,13 @@ Select failed
 	Default	Print "~t"+failed+" files failed"
 	End Select		
 
+
+If Not fatstorage fatstorage = "Store"
 If destroyoriginal
+	Print "Finalizing JCR creation"
 	cj.close fatstorage
 Else
+	Print "Finalizing JCR update"
 	closeupdatejcr cj,fatstorage
 	EndIf
 	

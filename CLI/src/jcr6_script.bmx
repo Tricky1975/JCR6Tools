@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.13
+Version: 16.05.03
 End Rem
 
 Strict
@@ -41,7 +41,7 @@ Import    "script/incbinscripts.bmx"
 
 
  
-MKL_Version "JCR6 - jcr6_script.bmx","16.03.13"
+MKL_Version "JCR6 - jcr6_script.bmx","16.05.03"
 MKL_Lic     "JCR6 - jcr6_script.bmx","GNU General Public License 3"
 MKL_Post
 
@@ -153,7 +153,7 @@ List2File StripExt(script)+".JCR6_Instructions",outputlist
 Print "And let's now get ready to rumble!"
 ?Win32
 ' Yeah, Windows is just a nasty piece of shit.
-system_ Replace(AppDir,"/","\")+"\jcr6_add.exe ~q"+createJCR6file+"~q ~q"+StripExt(script)+".JCR6_Instructions~q"
+system_ Replace(AppDir,"/","\")+"\jcr6_add.exe ~q"+createJCR6file+"~q ~q#"+StripExt(script)+".JCR6_Instructions~q"
 ?Not Win32
 system_ Replace(AppDir,"\","/")+"/jcr6_add ~q"+createJCR6file+"~q ~q#"+StripExt(script)+".JCR6_Instructions~q"
 ?

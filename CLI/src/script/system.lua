@@ -6,7 +6,7 @@
 	Mozilla Public License, v. 2.0. If a copy of the MPL was not 
 	distributed with this file, You can obtain one at 
 	http://mozilla.org/MPL/2.0/.
-        Version: 16.03.13
+        Version: 16.05.03
 ]]
 debug = false
 
@@ -55,7 +55,9 @@ local warntags = {"MOVE"}
          end,
    [2] = function() -- requested file is a directory
          local tree = gettree(file)
-         for file in each(tree) do Add(file) end
+                  local slash = ""
+                   if tofile and tofile~="" then slash="/" end
+         for efile in each(tree) do Add(file.."/"..efile,tofile..slash..efile,data,force) end
          end     
 })[filetype(file)]()
 end add = Add

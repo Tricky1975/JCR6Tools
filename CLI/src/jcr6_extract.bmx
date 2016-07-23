@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.12
+Version: 16.03.21
 End Rem
 Strict
 
@@ -33,7 +33,7 @@ Import    "imp/TrueArg.bmx"
 Import    "imp/WildCard.bmx"
 
  
-MKL_Version "JCR6 - jcr6_extract.bmx","16.03.12"
+MKL_Version "JCR6 - jcr6_extract.bmx","16.03.21"
 MKL_Lic     "JCR6 - jcr6_extract.bmx","GNU General Public License 3"
 MKL_Post
 
@@ -82,7 +82,7 @@ If gotswitch("-d")
 		EndIf
 	End If		
 
-Global Outputdir$ = "."
+Global Outputdir$ = launchdir
 If Len(targ)>2 Outputdir = targ[2]
 outputdir = Replace(outputdir,"\","/")
 If Suffixed(outputdir,"/") outputdir = Left(outputdir,Len(outputdir)-1)

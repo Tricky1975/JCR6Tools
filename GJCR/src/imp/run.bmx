@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2015, All rights reserved
+	(c) Jeroen P. Broks, 2015, 2016, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 15.10.19
+Version: 16.05.03
 End Rem
 Strict
 Import brl.eventqueue
@@ -29,7 +29,7 @@ Import tricky_units.MKL_Version
 
 Import "window.bmx"
 
-MKL_Version "JCR6 - run.bmx","15.10.19"
+MKL_Version "JCR6 - run.bmx","16.05.03"
 MKL_Lic     "JCR6 - run.bmx","GNU General Public License 3"
 
 
@@ -39,13 +39,19 @@ ShowGadget window
 showpanel 0
 Repeat
 ID = EventID()
-source = tgadget(EventSource())
+source = TGadget(EventSource())
 extraobject = EventExtra()
 Extra = String(extraObject)
-extragadget = tgadget(extraobject)
+extragadget = TGadget(extraobject)
+menu_copy.setenabled ListContains(allowcopy,ActiveGadget())
 Select ID
 	Case event_appterminate,event_windowclose
 		End
+	Case event_Menuaction
+		Select EventData()
+			Case 1001
+				GadgetCopy ActiveGadget	()
+			End Select
 	Case event_gadgetaction
 		Select source
 			Case wtabs
