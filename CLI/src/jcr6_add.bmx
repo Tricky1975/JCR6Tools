@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.21
+Version: 16.09.24
 End Rem
 Strict
 
@@ -28,13 +28,16 @@ Framework brl.retro
 Import    tricky_units.Listfile
 Import    tricky_units.Dirry
 Import    tricky_units.tree
+Import    tricky_units.MapListCopy
 Import    "imp/ModsINeed.bmx" ' This contains just all mods all components actively looking inside a JCR6 file or writing a JCR6 require.
 Import    "imp/TrueArg.bmx"
 Import    "imp/WildCard.bmx"
 Import    "imp/Update.bmx"
 
+
+'JCRCREATECHAT = True ' -- Debugging only!
  
-MKL_Version "JCR6 - jcr6_add.bmx","16.03.21"
+MKL_Version "JCR6 - jcr6_add.bmx","16.09.24"
 MKL_Lic     "JCR6 - jcr6_add.bmx","GNU General Public License 3"
 MKL_Post
 
@@ -322,10 +325,12 @@ For Local af:taddfile=EachIn addlist
 			EndIf
 		EndIf				
 	Next
+Print "Handling comments (if set)"	
 For Local ac:taddcomment = EachIn addlist
 	Print "- "+ac.name+" ... added comment"
 	MapInsert cj.comments,ac.name,ac.comment
 	Next	
+Print "Handling aliases (if set)"	
 Global aliased,e2:TJCREntry
 For Local al:talias = EachIn addlist
 	WriteStdout "- "+al.original+" ... "
@@ -337,7 +342,8 @@ For Local al:talias = EachIn addlist
 	ElseIf e
 		e2 = New TJCREntry
 		e2.filename = al.target
-		e2.mv = e.mv
+		e2.mv = copymapcontent(e.mv)
+		MapInsert e2.mv,"$__Entry",e2.FileName
 		MapInsert cj.entries,Upper(al.target),e2			
 		Print "aliassed as: "+al.target
 	Else

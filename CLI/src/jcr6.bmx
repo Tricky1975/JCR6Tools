@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.13
+Version: 16.09.24
 End Rem
 Strict
 
@@ -30,7 +30,7 @@ Import    tricky_units.ListDir
 Import    tricky_units.prefixsuffix
 Import    "imp/Version.bmx"
 
-MKL_Version "JCR6 - jcr6.bmx","16.03.13"
+MKL_Version "JCR6 - jcr6.bmx","16.09.24"
 MKL_Lic     "JCR6 - jcr6.bmx","GNU General Public License 3"
 MKL_Post
 
