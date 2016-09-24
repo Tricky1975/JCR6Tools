@@ -125,6 +125,14 @@ Type	MyAPI
 	Return FileType(F)
 	End Method
 	
+	Method StripDir$(F$)
+	Return brl.filesystem.StripDir(F)
+	End Method
+	
+	Method ExtractDir(F$)
+	Return brl.filesystem.ExtractDir(F)
+	End method
+	
 	End Type
 
 GALE_Register New MyAPI,"JLS"  ' JLS = JCR Lua Script

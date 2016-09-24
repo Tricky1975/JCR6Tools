@@ -68,4 +68,5 @@ For Local i=2 Until Len AppArgs
 	cmd:+" ~q"+AppArgs[i]+"~q"
 	Next
 
+ChangeDir LaunchDir
 system_ cmd

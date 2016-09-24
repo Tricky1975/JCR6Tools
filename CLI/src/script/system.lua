@@ -39,7 +39,7 @@ local allowedtags = {"TARGET","STORAGE","MERGE","MERGESTRIPEXT","MOVE","AUTHOR",
 local warntags = {"MOVE"}
 ;({
    [0] = function() -- file not found
-         print("ERROR! file\""..file.."\" does not appear to exist! -- Request to add it will therefore be ignored")
+         print("ERROR! file \""..file.."\" does not appear to exist! -- Request to add it will therefore be ignored")
          end,
    [1] = function() -- requested file is a single file
          wout("FILE:"..file)
