@@ -20,18 +20,18 @@
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.05.03
+Version: 16.12.21
 ]]
 
 --- This script is not part of JCR6 itself. I only used it to both test the JCR6 scripter
 --- but also to help it "build itself". A few handy lua libs I wrote had to be included too ya know ;)
 
 
-jcr6file("script/libs.jcr")
+jcr6file("libs.jcr")
 config = config or {}
 
 -- @IF $MAC
-libdir = '/Volumes/Irravonia/Projects/Lua Libs For GALE'
+libdir = '/Volumes/Scyndi/Projects/Applications/Lua Libs For GALE'
 -- @FI
 
 -- @IF $WINDOWS

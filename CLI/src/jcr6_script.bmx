@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.09.24
+Version: 16.12.21
 End Rem
 
 Strict
@@ -41,7 +41,7 @@ Import    "script/incbinscripts.bmx"
 
 
  
-MKL_Version "JCR6 - jcr6_script.bmx","16.09.24"
+MKL_Version "JCR6 - jcr6_script.bmx","16.12.21"
 MKL_Lic     "JCR6 - jcr6_script.bmx","GNU General Public License 3"
 MKL_Post
 
@@ -129,9 +129,9 @@ Type	MyAPI
 	Return brl.filesystem.StripDir(F)
 	End Method
 	
-	Method ExtractDir(F$)
+	Method ExtractDir$(F$)
 	Return brl.filesystem.ExtractDir(F)
-	End method
+	End Method
 	
 	End Type
 

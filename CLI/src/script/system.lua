@@ -6,7 +6,7 @@
 	Mozilla Public License, v. 2.0. If a copy of the MPL was not 
 	distributed with this file, You can obtain one at 
 	http://mozilla.org/MPL/2.0/.
-        Version: 16.09.24
+        Version: 16.12.21
 ]]
 debug = false
 
@@ -97,6 +97,10 @@ if curaliasori~=upper(ori) then wout("ALIAS:"..ori) end
 wout("AS:"..tar)
 curaliasoi=upper(ori)
 end alias=Alias
+
+function JCR6MergeSkipPrefix(prefix)
+    wout("JCRSKIPPREFIX:"..prefix)
+end
 
 function jcr6_system_init()
 local gappargs = loadstring(JLS.GetAppArgs())

@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.09.24
+Version: 16.12.21
 End Rem
 Strict
 
@@ -37,7 +37,7 @@ Import    "imp/Update.bmx"
 
 'JCRCREATECHAT = True ' -- Debugging only!
  
-MKL_Version "JCR6 - jcr6_add.bmx","16.09.24"
+MKL_Version "JCR6 - jcr6_add.bmx","16.12.21"
 MKL_Lic     "JCR6 - jcr6_add.bmx","GNU General Public License 3"
 MKL_Post
 
@@ -83,6 +83,8 @@ Global destroyoriginal:Byte
 Global Jfile$ = Targ[1]
 Global fatstorage$ = "Store"
 Global jconfig:configmap
+
+Global JCRSkipPrefix:TList = New TList
 
 Function GetProgress:TList(A:TList,dir$="")
 Local AF:TAddFile
@@ -149,6 +151,8 @@ For Local trueline$=EachIn Listfile(file)
 				af.storage = globalstorage
 				ListAddLast ret,af
 				DebugLog "#INST: Added: "+af.ofile
+			Case "JCRSKIPPREFIX"
+				ListAddLast JCRSkipPrefix,linepar	
 			Case "TARGET"
 				If Not af er "ERROR! "+linecmd+" not possible with defining a FILE first" Else af.tfile = linepar
 			Case "STORAGE"
@@ -278,6 +282,7 @@ JCR6CrashError = False
 JCR6DumpError = False
 DebugLog "Addlist has "+CountList(addlist)+" items"
 Print "Freezing requested raw files:"
+Global Jskip:Byte
 For Local af:taddfile=EachIn addlist
 	pos:+1
 	WriteStdout "- "+af.ofile+" ... "+bck(pos+"/"+tot)
@@ -289,24 +294,31 @@ For Local af:taddfile=EachIn addlist
 		If tdir tdir:+"/"
 		For Local entry:TJCREntry = EachIn MapValues(mj.entries)
 			WriteStdout "  = "+entry.filename+" ... "
-			JCR_Error = Null
-			bank = JCR_B(mj,entry.filename)
-			If bank e = cj.addentry(bank,tdir+entry.filename,af.storage,af.author,af.notes)
-			If JCR_Error Or (Not e) Or (Not bank)
-				WriteStdout "failed -- "; failed :+ 1
-				If JCR_Error Print JCR_Error.errormessage Else Print "Unknown error"
-			Else	
-				added:+1		
-				If e.storage="Store"
-					WriteStdout "stored"
-				Else
-					WriteStdout e.storage+":reduced to "+Int((Double(e.compressedsize)/Double(e.size))*100)+"%"
-					EndIf
-				Print " ... "+act[ListContains(updateremoved,Upper(af.tfile))]
-				ListAddLast addedfiles,af.ofile
-				EndIf
-			
+			jskip = False
+			For Local pre$=EachIn JCRSkipPrefix
+				jskip = jskip Or Prefixed(StripDir(Upper(entry.filename)),Upper(pre))
 			Next
+			If jskip 
+				Print " skipped"
+			Else	
+				JCR_Error = Null
+				bank = JCR_B(mj,entry.filename)
+				If bank e = cj.addentry(bank,tdir+entry.filename,af.storage,af.author,af.notes)
+				If JCR_Error Or (Not e) Or (Not bank)
+					WriteStdout "failed -- "; failed :+ 1
+					If JCR_Error Print JCR_Error.errormessage Else Print "Unknown error"
+				Else	
+					added:+1		
+					If e.storage="Store"
+						WriteStdout "stored"
+					Else
+						WriteStdout e.storage+":reduced to "+Int((Double(e.compressedsize)/Double(e.size))*100)+"%"
+					EndIf
+					Print " ... "+act[ListContains(updateremoved,Upper(af.tfile))]
+					ListAddLast addedfiles,af.ofile
+				EndIf
+			EndIf
+		Next
 	Else
 		JCR_Error = Null
 		e = cj.addentry(af.ofile,af.tfile,af.storage,af.author,af.notes)
@@ -342,10 +354,11 @@ For Local al:talias = EachIn addlist
 	ElseIf e
 		e2 = New TJCREntry
 		e2.filename = al.target
-		e2.mv = copymapcontent(e.mv)
+		e2.mv = CopyMapContent(e.mv)
 		MapInsert e2.mv,"$__Entry",e2.FileName
 		MapInsert cj.entries,Upper(al.target),e2			
 		Print "aliassed as: "+al.target
+		aliased:+1
 	Else
 		Print "failed -- Alias request from non-existing original: "+al.original
 		failed:+1
