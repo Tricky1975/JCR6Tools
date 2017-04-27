@@ -69,6 +69,7 @@ End Function
 
 Print "Reading JCR: "+AppArgs[1]+"~n"
 
+ChangeDir launchdir
 Global JCR:TJCRDir = JCR_Dir(AppArgs[1])
 If Not JCR Print "ERROR! No JCR file could be read!" End
 Global E:TJCREntry

@@ -48,7 +48,7 @@ Type ListTab Extends TTab
 	Method Flow(ID,Source:TGadget,Extra$,ExtraGadget:TGadget)
 	'fileinfo.setenabled CFile<>""
 	If cfile And JCR
-		Select jcr_changed(JCR)
+		Select JCR_Changed(JCR)
 			Case 0 ' Do nothing
 			Case 1,2
 				Notify "One of the main files in this resource appears to have been modified, and will be reloaded!"
@@ -244,7 +244,8 @@ CreateLabel "Down to:    ",0, 45,200,15,FileInfo
 CreateLabel "Offset:     ",0, 60,200,15,FileInfo 
 CreateLabel "Algorithm:  ",0, 75,200,15,FileInfo 
 CreateLabel "Author:     ",0, 90,200,15,FileInfo 
-CreateLabel "Main File:  ",0,105,200,15,FileInfo 
+CreateLabel "Unix perm:  ",0,105,200,15,fileinfo
+CreateLabel "Main File:  ",0,120,200,15,FileInfo 
 
 Global FIFile:TGadget = CreateLabel("--",200,  0,200,15,FileInfo)
 Global FISize:TGadget = CreateLabel("--",200, 15,200,15,FileInfo)
@@ -253,7 +254,8 @@ Global FIDown:TGadget = CreateLabel("--",200, 45,200,15,FileInfo)
 Global FIOffs:TGadget = CreateLabel("--",200, 60,200,15,FileInfo)
 Global FIAlgo:TGadget = CreateLabel("--",200, 75,200,15,FileInfo)
 Global FIAuth:TGadget = CreateLabel("--",200, 90,200,15,FileInfo)
-Global FIMain:TGadget = CreateLabel("--",200,105,200,90,FileInfo)
+Global FIUPrm:TGadget = CreateLabel("--",200,105,200,15,FileInfo)
+Global FIMain:TGadget = CreateLabel("--",200,120,200,75,FileInfo)
 
 
 Global JIFW = ClientWidth(FileInfo)
@@ -382,6 +384,11 @@ Type TIFile Extends TIMain
 	SetGadgetText FIAuth,Ent.Author	
 	SetGadgetText FINotes,Ent.VNotes()
 	SetGadgetText FIMain,Ent.MainFile
+	If ent.unixpermissions<0
+		SetGadgetText FIUPrm,"< Not defined >"
+	Else
+		SetGadgetText FIUPrm,Permissions(ent.unixpermissions)
+	EndIf
 	End Method	
 	End Type
 

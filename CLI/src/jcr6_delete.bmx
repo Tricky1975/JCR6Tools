@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.03.12
+Version: 17.04.21
 End Rem
 Strict
 
@@ -34,7 +34,7 @@ Import    "imp/WildCard.bmx"
 
 
  
-MKL_Version "JCR6 - jcr6_delete.bmx","16.03.12"
+MKL_Version "JCR6 - jcr6_delete.bmx","17.04.21"
 MKL_Lic     "JCR6 - jcr6_delete.bmx","GNU General Public License 3"
 MKL_Post
 
@@ -43,6 +43,7 @@ If Len(AppArgs)<2 Print "usage: jcr6 delete <JCRFILE> [file/@list]~n~nThe suppor
 
 If Len(Targ[1])<2 Print "ERROR! Command line error" End
 
+ChangeDir launchdir
 Global j$ = targ[1]
 Global files$ = "*"
 
