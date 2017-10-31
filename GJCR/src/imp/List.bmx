@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2015, All rights reserved
+	(c) Jeroen P. Broks, 2015, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 15.10.19
+Version: 17.04.27
 End Rem
 Strict
 Import jcr6.jcr6main
@@ -33,7 +33,7 @@ Import "view.bmx"
 
 'Incbin "JCR.png"
 
-MKL_Version "JCR6 - List.bmx","15.10.19"
+MKL_Version "JCR6 - List.bmx","17.04.27"
 MKL_Lic     "JCR6 - List.bmx","GNU General Public License 3"
 
 

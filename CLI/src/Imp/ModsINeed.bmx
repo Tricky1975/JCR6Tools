@@ -4,7 +4,7 @@ Rem
 	
 	
 	
-	(c) Jeroen P. Broks, 2016, All rights reserved
+	(c) Jeroen P. Broks, 2016, 2017, All rights reserved
 	
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 16.05.09
+Version: 17.10.31
 End Rem
 Import "Version.bmx"
 Import jcr6.zlibdriver
@@ -29,3 +29,4 @@ Import jcr6.wad
 Import jcr6.realdir
 Import jcr6.tar4jcr6
 Import jcr6.jcr5driver
+Import tricky_units.ansistring
