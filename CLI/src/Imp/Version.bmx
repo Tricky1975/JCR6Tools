@@ -34,7 +34,7 @@ If Len(AppArgs)>1
       ?Not win32
 	If AppArgs[1]="*VERSION*" Or AppArgs[1]="*FULLVERSION*"
 	?
-		Print StripAll(AppFile)+"~t"+"v"+MKL_NewestVersion()
+		Print StripAll(AppFile)+"~t"+"v"+MKL_NewestVersion()+" bmx"
 		?win32
 		If AppArgs[1]="-FULLVERSION-"
 		?Not win32

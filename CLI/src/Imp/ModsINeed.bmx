@@ -20,7 +20,7 @@ Rem
 		
 	Exceptions to the standard GNU license are available with Jeroen's written permission given prior 
 	to the project the exceptions are needed for.
-Version: 17.10.31
+Version: 17.11.30
 End Rem
 Import "Version.bmx"
 Import jcr6.zlibdriver
@@ -30,3 +30,5 @@ Import jcr6.realdir
 Import jcr6.tar4jcr6
 Import jcr6.jcr5driver
 Import tricky_units.ansistring
+Import trickyfake.fakepack
+

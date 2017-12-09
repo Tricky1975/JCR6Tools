@@ -59,7 +59,7 @@ If Len(AppArgs)=1
 	Print "          On this platform it's turned on by default"
 	?
 	Print 
-	Print "Currently supported compression algorithms for -cm and -fm:"
+	Print "Currently supported compression algorithms for -cm and -fc:"
 	For Local i$=EachIn ListCompDrivers() WriteStdout i+" " Next Print
 	Print 
 	'Print "Wild card support is rather limited and in instruction files and list files not even allowed at all"

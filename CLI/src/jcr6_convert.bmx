@@ -41,6 +41,10 @@ MKL_Version "JCR6 - jcr6_convert.bmx","16.05.03"
 MKL_Lic     "JCR6 - jcr6_convert.bmx","GNU General Public License 3"
 MKL_Post
 
+print "WARNING! This tool is now deprecated!~nPlease use the tool created in the Go language in stead!"
+print "https://github.com/Tricky1975/jcr6cli"
+print "Thank you~n~n~n"
+
 If Len(AppArgs)=1
 	Print "usage: jcr6 convert <Original> <Target> [switches]"
 	Print 
